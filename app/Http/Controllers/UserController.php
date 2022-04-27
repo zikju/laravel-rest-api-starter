@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\User\CreateRequest;
 use App\Models\User;
+use Illuminate\Http\JsonResponse;
 
 class UserController extends Controller
 {
@@ -11,9 +12,9 @@ class UserController extends Controller
      * Creates new user
      *
      * @param CreateRequest $request
-     * @return \Illuminate\Http\JsonResponse
+     * @return JsonResponse
      */
-    public function create (CreateRequest $request)
+    public function create (CreateRequest $request): JsonResponse
     {
         // Retrieve the validated input data...
         $validatedRequestData = $request->validated();

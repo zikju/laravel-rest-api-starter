@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\User\CreateRequest;
+use App\Http\Requests\User\DeleteRequest;
 use App\Models\User;
 use Illuminate\Http\JsonResponse;
 
@@ -25,5 +26,22 @@ class UserController extends Controller
         ));
 
         return response()->json($userData);
+    }
+
+    /**
+     * Delete User (by ID)
+     *
+     * @param DeleteRequest $request
+     * @return JsonResponse
+     */
+    public function delete (DeleteRequest $request): JsonResponse
+    {
+        // Delete from database
+        User::destroy($request->id);
+
+        return response()->json([
+            'status' => 'ok',
+            'message' => 'User deleted!'
+        ]);
     }
 }

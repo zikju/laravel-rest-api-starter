@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\AuthController;
 use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
 
@@ -20,3 +21,14 @@ use Illuminate\Support\Facades\Route;
 
 Route::post('users', [UserController::class, 'create']);
 Route::delete('users', [UserController::class, 'delete']);
+
+/**
+ * ---------------------------------------
+ * [AUTH] ENDPOINTS
+ * ---------------------------------------
+ */
+Route::prefix('auth')->group(function () {
+    Route::post('login', [AuthController::class, 'login']);
+    // TODO: Logout endpoint
+    // TODO: Register endpoint
+});

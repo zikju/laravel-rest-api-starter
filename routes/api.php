@@ -15,24 +15,37 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-/*Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
-    return $request->user();
-});*/
-
-// Route::post('users', [UserController::class, 'create']);
-// Route::delete('users', [UserController::class, 'delete']);
-
 /**
  * ---------------------------------------
  * [AUTH] ENDPOINTS
  * ---------------------------------------
+ *
+ * ENDPOINT PATH: api/auth/*
+ *
  */
 Route::prefix('auth')->group(function () {
-    Route::post('login', [AuthController::class, 'login']);
+    Route::post('login', [AuthController::class, 'login'])->name('login');
 
+    /*/ ONLY LOGGED IN */
     Route::middleware('auth')->group(function () {
-        Route::get('logout', [AuthController::class, 'logout']);
+        Route::get('logout', [AuthController::class, 'logout'])->name('logout');
     });
-
-    // TODO: Register endpoint
+    /* ONLY LOGGED IN /*/
 });
+
+
+/**
+ * ---------------------------------------
+ * [USERS] ENDPOINT
+ * ---------------------------------------
+ *
+ * ENDPOINT PATH: api/users/*
+ *
+ */
+
+/*/ ONLY LOGGED IN */
+Route::middleware('auth')->group(function () {
+    Route::post('users', [UserController::class, 'create'])->name('createUser');
+    Route::delete('users', [UserController::class, 'delete'])->name('deleteUser');
+});
+/* ONLY LOGGED IN /*/

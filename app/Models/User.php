@@ -3,10 +3,16 @@
 namespace App\Models;
 
 use PHPOpenSourceSaver\JWTAuth\Contracts\JWTSubject;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 
+/**
+ * App\Models\User
+ *
+ * @mixin \Eloquent
+ */
 class User extends Authenticatable implements JWTSubject
 {
     use HasFactory, Notifiable;
@@ -32,13 +38,12 @@ class User extends Authenticatable implements JWTSubject
     ];
 
     /**
-     * The attributes that should be cast.
-     *
-     * @var array<string, string>
+     * @return HasMany
      */
-    protected $casts = [
-        // 'email_verified_at' => 'datetime',
-    ];
+    public function userSessions(): HasMany
+    {
+        return $this->hasMany(UserSession::class);
+    }
 
     /**
      * Get the identifier that will be stored in the subject claim of the JWT.

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\Auth\LoginRequest;
+use App\Models\UserSession;
 use Illuminate\Http\JsonResponse;
 
 class AuthController extends Controller
@@ -27,8 +28,9 @@ class AuthController extends Controller
         }
 
         $accessToken = auth()->attempt($validatedRequestData);
+        $refreshToken = (new UserSession())->createSession($request->getClientIp());
 
-        return $this->respondWithTokens($accessToken);
+        return $this->respondWithTokens($accessToken, $refreshToken);
     }
 
     /**
@@ -49,14 +51,15 @@ class AuthController extends Controller
     /**
      * Get the token array structure.
      *
-     * @param string $token
-     *
+     * @param string $accessToken
+     * @param string $refreshToken
      * @return JsonResponse
      */
-    protected function respondWithTokens(string $token): JsonResponse
+    protected function respondWithTokens(string $accessToken, string $refreshToken): JsonResponse
     {
         return response()->json([
-            'access_token' => $token,
+            'access_token' => $accessToken,
+            'refresh_token' => $refreshToken,
             'token_type' => 'bearer',
             'expires_in' => auth()->factory()->getTTL() * 60
         ]);

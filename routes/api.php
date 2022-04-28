@@ -19,8 +19,8 @@ use Illuminate\Support\Facades\Route;
     return $request->user();
 });*/
 
-Route::post('users', [UserController::class, 'create']);
-Route::delete('users', [UserController::class, 'delete']);
+// Route::post('users', [UserController::class, 'create']);
+// Route::delete('users', [UserController::class, 'delete']);
 
 /**
  * ---------------------------------------
@@ -29,6 +29,10 @@ Route::delete('users', [UserController::class, 'delete']);
  */
 Route::prefix('auth')->group(function () {
     Route::post('login', [AuthController::class, 'login']);
-    // TODO: Logout endpoint
+
+    Route::middleware('auth')->group(function () {
+        Route::get('logout', [AuthController::class, 'logout']);
+    });
+
     // TODO: Register endpoint
 });

@@ -8,17 +8,6 @@ use Illuminate\Http\JsonResponse;
 class AuthController extends Controller
 {
     /**
-     * Create a new AuthController instance.
-     *
-     * @return void
-     */
-    public function __construct()
-    {
-        // TODO: move to api.php routes
-        $this->middleware('auth:api', ['except' => ['login']]);
-    }
-
-    /**
      * Get a JWT via given credentials.
      *
      * @param LoginRequest $request
@@ -40,6 +29,21 @@ class AuthController extends Controller
         $accessToken = auth()->attempt($validatedRequestData);
 
         return $this->respondWithTokens($accessToken);
+    }
+
+    /**
+     * Log the user out (Invalidate the token).
+     *
+     * @return JsonResponse
+     */
+    public function logout(): JsonResponse
+    {
+        auth()->logout();
+
+        return response()->json([
+            'status' => 'ok',
+            'message' => 'Successfully logged out'
+        ]);
     }
 
     /**

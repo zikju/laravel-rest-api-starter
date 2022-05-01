@@ -31,6 +31,13 @@ class UserSession extends Model
         'ip_address'
     ];
 
+    protected $visible = [
+        'id',
+        'user_id',
+        'refresh_token',
+        'expires_at'
+    ];
+
 
     /**
      * @return BelongsTo
@@ -43,15 +50,16 @@ class UserSession extends Model
     /**
      * Create User session in Database
      *
+     * @param int $user_id
      * @param string $ip_address
      * @return string
      */
-    public function createSession(string $ip_address): string
+    public function createSession(int $user_id, string $ip_address): string
     {
         $refreshToken = Str::uuid()->toString();
         $expiresAt = $this->getRefreshTokenTTL();
         $this->query()->create([
-            'user_id' => auth()->id(),
+            'user_id' => $user_id,
             'refresh_token' => $refreshToken,
             'expires_at' => $expiresAt,
             'ip_address' => $ip_address

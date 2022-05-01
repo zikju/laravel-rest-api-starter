@@ -11,7 +11,7 @@ class AuthController extends Controller
 {
     /**
      * Login user.
-     * Generate a pair of 'Access Token' and 'Refresh Token'
+     * - Generate a pair of 'Access Token' and 'Refresh Token'
      *
      * @param LoginRequest $request
      * @return JsonResponse
@@ -37,7 +37,7 @@ class AuthController extends Controller
 
     /**
      * Refresh Tokens.
-     * Generate a new pair of 'Access Token' and 'Refresh Token'
+     * - Generate a new pair of 'Access Token' and 'Refresh Token'
      *
      * @param Request $request
      * @return JsonResponse
@@ -76,7 +76,7 @@ class AuthController extends Controller
 
     /**
      * Logout user.
-     * Invalidate 'Access Token' and delete User session from database.
+     * - Invalidate 'Access Token' and delete User session from database.
      *
      * @param Request $request
      * @return JsonResponse
@@ -97,7 +97,8 @@ class AuthController extends Controller
     }
 
     /**
-     * Return response with a pair of 'Access Token' and 'Refresh Token'
+     * Respond with Tokens.
+     * - Return response with a pair of 'Access Token' and 'Refresh Token'
      *
      * @param string $accessToken
      * @param string $refreshToken
@@ -110,7 +111,7 @@ class AuthController extends Controller
             'access_token' => $accessToken,
             'refresh_token' => $refreshToken,
             'token_type' => 'bearer',
-            'expires_in' => auth()->factory()->getTTL() * 60
+            'expires_in' => env('JWT_TTL') * 60 // in minutes
         ]);
     }
 }

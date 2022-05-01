@@ -28,8 +28,7 @@ class EnsureTokenHeadersAreExist
         }
 
         // Verify if 'Refresh Token' exist in request header
-        $refreshTokenHeaderKey = env('JWT_REFRESH_TOKEN_HEADER_KEY', 'X-REFRESH-TOKEN-ID');
-        $refreshToken = $request->header($refreshTokenHeaderKey);
+        $refreshToken = $request->header(env('JWT_REFRESH_TOKEN_HEADER_KEY'));
         if (! $refreshToken || ! Str::isUuid($refreshToken)) {
             return response()->json([
                 'status' => 'error',

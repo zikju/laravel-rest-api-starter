@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\UserController;
+use App\Http\Middleware\EnsureTokenHeadersAreExist;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -26,14 +27,23 @@ use Illuminate\Support\Facades\Route;
 Route::prefix('auth')->group(function () {
 
     Route::middleware(['middleware' => 'throttle:5,1'])->group(function () {
-        Route::post('login', [AuthController::class, 'login'])->name('login');
+        /* Login */
+        Route::post('login', [AuthController::class, 'login'])
+            ->name('login');
+
+        /* Refresh Tokens */
+        Route::get('refresh-tokens', [AuthController::class, 'refreshTokens'])
+            ->middleware(EnsureTokenHeadersAreExist::class)
+            ->name('refreshTokens');
     });
 
-    /*/ ONLY LOGGED IN */
+
     Route::middleware('auth')->group(function () {
-        Route::get('logout', [AuthController::class, 'logout'])->name('logout');
+        /* Logout */
+        Route::get('logout', [AuthController::class, 'logout'])
+            ->middleware(EnsureTokenHeadersAreExist::class)
+            ->name('logout');
     });
-    /* ONLY LOGGED IN /*/
 
 });
 
@@ -47,12 +57,16 @@ Route::prefix('auth')->group(function () {
  *
  */
 
-/*/ ONLY LOGGED IN */
 Route::middleware('auth')->group(function () {
+    /* Create User */
+    Route::post('users', [UserController::class, 'create'])
+        ->name('createUser');
 
-    Route::post('users', [UserController::class, 'create'])->name('createUser');
-    Route::delete('users', [UserController::class, 'delete'])->name('deleteUser');
-
+    /* Delete User */
+    Route::delete('users', [UserController::class, 'delete'])
+        ->name('deleteUser');
 });
-/* ONLY LOGGED IN /*/
 
+/* Route for tests... */
+Route::get('test', [\App\Http\Controllers\TestController::class, 'test'])
+    ->name('test');

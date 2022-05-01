@@ -24,13 +24,17 @@ use Illuminate\Support\Facades\Route;
  *
  */
 Route::prefix('auth')->group(function () {
-    Route::post('login', [AuthController::class, 'login'])->name('login');
+
+    Route::middleware(['middleware' => 'throttle:5,1'])->group(function () {
+        Route::post('login', [AuthController::class, 'login'])->name('login');
+    });
 
     /*/ ONLY LOGGED IN */
     Route::middleware('auth')->group(function () {
         Route::get('logout', [AuthController::class, 'logout'])->name('logout');
     });
     /* ONLY LOGGED IN /*/
+
 });
 
 
@@ -45,7 +49,10 @@ Route::prefix('auth')->group(function () {
 
 /*/ ONLY LOGGED IN */
 Route::middleware('auth')->group(function () {
+
     Route::post('users', [UserController::class, 'create'])->name('createUser');
     Route::delete('users', [UserController::class, 'delete'])->name('deleteUser');
+
 });
 /* ONLY LOGGED IN /*/
+

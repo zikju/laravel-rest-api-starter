@@ -1,5 +1,5 @@
 # Description
-Laravcel 9 boilerplate for a handy REST API backend development.<br />
+Laravel 9 boilerplate for a handy REST API backend development.<br />
 
 _Project created mainly for myself - to learn and practice Laravel._
 

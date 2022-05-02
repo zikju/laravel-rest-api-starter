@@ -31,4 +31,13 @@ _TBA_
 Each token has its own lifetime, for example access: 30 min, refresh: 30 days
 
 # Endpoints
-_TBA_
+
+### Authentication endpoints:
+
+| Method | Endpoint                | Parameters                                                                                                           | Description    |
+|--------|-------------------------|----------------------------------------------------------------------------------------------------------------------|----------------|
+| `POST` | `/auth/login`           | `email` *string* **required**<br/>`password` *string* **required**                                                   | login user     |
+| `GET`  | `/auth/logout`          |                                                                                                                      | logout user    |
+| `GET`  | `/auth/refresh-tokens`  |                                                                                                                      | refresh tokens |
+| `POST` | `/auth/register`        | `email` *string* **required**<br/>`password` *string* **required**<br/>`password_confirmation` *string* **required** | registration   |
+| `POST` | `/auth/confirm/{token}` | `{token}` *string* **required**                                                                                      | confirm email  |

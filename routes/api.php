@@ -29,12 +29,12 @@ Route::prefix('auth')->group(function () {
     Route::middleware(['middleware' => 'throttle:5,1'])->group(function () {
         /* Login */
         Route::post('login', [AuthController::class, 'login'])
-            ->name('login');
+            ->name('auth.login');
 
         /* Refresh Tokens */
         Route::get('refresh-tokens', [AuthController::class, 'refreshTokens'])
             ->middleware(EnsureTokenHeadersAreExist::class)
-            ->name('refreshTokens');
+            ->name('auth.refresh');
     });
 
 
@@ -42,7 +42,7 @@ Route::prefix('auth')->group(function () {
         /* Logout */
         Route::get('logout', [AuthController::class, 'logout'])
             ->middleware(EnsureTokenHeadersAreExist::class)
-            ->name('logout');
+            ->name('auth.logout');
     });
 
 });
@@ -60,11 +60,11 @@ Route::prefix('auth')->group(function () {
 Route::middleware('auth')->group(function () {
     /* Create User */
     Route::post('users', [UserController::class, 'create'])
-        ->name('createUser');
+        ->name('users.create');
 
     /* Delete User */
     Route::delete('users', [UserController::class, 'delete'])
-        ->name('deleteUser');
+        ->name('users.delete');
 });
 
 

@@ -1,7 +1,9 @@
 <?php
 
-use App\Http\Controllers\AuthController;
+use App\Http\Controllers\Auth\LoginController;
+use App\Http\Controllers\Auth\RefreshTokensController;
 use App\Http\Controllers\UserController;
+
 use App\Http\Middleware\EnsureTokenHeadersAreExist;
 use Illuminate\Support\Facades\Route;
 
@@ -28,11 +30,11 @@ Route::prefix('auth')->group(function () {
 
     Route::middleware(['middleware' => 'throttle:5,1'])->group(function () {
         /* Login */
-        Route::post('login', [AuthController::class, 'login'])
+        Route::post('login', [LoginController::class, 'login'])
             ->name('auth.login');
 
         /* Refresh Tokens */
-        Route::get('refresh-tokens', [AuthController::class, 'refreshTokens'])
+        Route::get('refresh-tokens', [RefreshTokensController::class, 'refreshTokens'])
             ->middleware(EnsureTokenHeadersAreExist::class)
             ->name('auth.refresh');
     });
@@ -40,7 +42,7 @@ Route::prefix('auth')->group(function () {
 
     Route::middleware('auth')->group(function () {
         /* Logout */
-        Route::get('logout', [AuthController::class, 'logout'])
+        Route::get('logout', [LoginController::class, 'logout'])
             ->middleware(EnsureTokenHeadersAreExist::class)
             ->name('auth.logout');
     });

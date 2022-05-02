@@ -88,7 +88,7 @@ Route::middleware('auth')->group(function () {
  */
 
 Route::fallback(static function (){
-    abort(404, 'API resource not found');
+    return \App\Helpers\Respond::error('API resource not found', 404);
 });
 
 /* Route for tests... */

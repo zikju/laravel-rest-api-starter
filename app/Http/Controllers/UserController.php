@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Helpers\Respond;
 use App\Http\Requests\User\CreateRequest;
 use App\Http\Requests\User\DeleteRequest;
 use App\Models\User;
@@ -25,15 +26,11 @@ class UserController extends Controller
             ['password' => bcrypt($request->password)]
         ));
 
-        return response()->json([
-            'status' => 'ok',
-            'message' => 'User created!',
-            'data' => $userData
-        ]);
+        return Respond::ok('User created!', $userData->toArray());
     }
 
     /**
-     * Delete User (by ID)
+     * Deletes User (by ID)
      *
      * @param DeleteRequest $request
      * @return JsonResponse
@@ -43,9 +40,6 @@ class UserController extends Controller
         // Delete from database
         User::destroy($request->id);
 
-        return response()->json([
-            'status' => 'ok',
-            'message' => 'User deleted!'
-        ]);
+        return Respond::ok('User deleted!');
     }
 }

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Auth;
 
+use App\Helpers\Respond;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Auth\LoginRequest;
 use App\Models\UserSession;
@@ -22,24 +23,20 @@ class LoginController extends Controller
         // Retrieve the validated input data...
         $validatedRequestData = $request->validated();
 
-        // Validate credentials and create 'Access Token'
+        // Create 'Access Token'
         if (! $accessToken = auth()->attempt($validatedRequestData)) {
-            return response()->json([
-                'status' => 'error',
-                'message' => 'INVALID_CREDENTIALS'
-            ], 401);
+            return Respond::error('INVALID_CREDENTIALS', 401);
         }
 
         // Create 'Refresh Token'
         $refreshToken = (new UserSession())->createSession(auth()->id(), $request->getClientIp());
 
-        return response()->json([
-            'status' => 'ok',
+        $responseData = [
             'access_token' => $accessToken,
-            'refresh_token' => $refreshToken,
-            'token_type' => 'bearer',
-            'expires_in' => env('JWT_TTL') * 60 // in minutes
-        ]);
+            'refresh_token' => $refreshToken
+        ];
+
+        return Respond::ok('Successfully logged in!', $responseData);
     }
 
     /**
@@ -58,9 +55,6 @@ class LoginController extends Controller
         $refreshToken = $request->header(env('JWT_REFRESH_TOKEN_HEADER_KEY'));
         UserSession::where('refresh_token', $refreshToken)->delete();
 
-        return response()->json([
-            'status' => 'ok',
-            'message' => 'Successfully logged out'
-        ]);
+        return Respond::ok('Successfully logged out!');
     }
 }

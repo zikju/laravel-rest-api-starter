@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Auth;
 
+use App\Helpers\Respond;
 use App\Http\Controllers\Controller;
 use App\Models\UserSession;
 use Illuminate\Http\JsonResponse;
@@ -33,10 +34,7 @@ class RefreshTokensController extends Controller
         // Handle invalid User session
         if (empty($userSession)) {
             // Return response with error
-            return response()->json([
-                'status' => 'error',
-                'message'=> 'INVALID_REFRESH_TOKEN'
-            ], 400);
+            return Respond::error('INVALID_REFRESH_TOKEN');
         }
 
         // Create new 'Refresh Token' and User session in database
@@ -45,12 +43,11 @@ class RefreshTokensController extends Controller
         // Create new 'Access Token'
         $accessToken = auth()->refresh();
 
-        return response()->json([
-            'status' => 'ok',
+        $responseData = [
             'access_token' => $accessToken,
-            'refresh_token' => $refreshToken,
-            'token_type' => 'bearer',
-            'expires_in' => env('JWT_TTL') * 60 // in minutes
-        ]);
+            'refresh_token' => $refreshToken
+        ];
+
+        return Respond::ok('Tokens refreshed!', $responseData);
     }
 }

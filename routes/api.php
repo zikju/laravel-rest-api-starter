@@ -67,6 +67,18 @@ Route::middleware('auth')->group(function () {
         ->name('deleteUser');
 });
 
+
+/**
+ * ---------------------------------------
+ * FALLBACK
+ * ---------------------------------------
+ *
+ */
+
+Route::fallback(function (){
+    abort(404, 'API resource not found');
+});
+
 /* Route for tests... */
 Route::get('test', [\App\Http\Controllers\TestController::class, 'test'])
     ->name('test');

@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\Auth\RefreshTokensController;
+use App\Http\Controllers\Auth\RegistrationController;
 use App\Http\Controllers\UserController;
 
 use App\Http\Middleware\EnsureTokenHeadersAreExist;
@@ -37,6 +38,15 @@ Route::prefix('auth')->group(function () {
         Route::get('refresh-tokens', [RefreshTokensController::class, 'refreshTokens'])
             ->middleware(EnsureTokenHeadersAreExist::class)
             ->name('auth.refresh');
+
+        /* Registration */
+        Route::post('register', [RegistrationController::class, 'register'])
+            ->name('auth.registration');
+
+        /* Confirm Email */
+        Route::put('confirm/{token}', [RegistrationController::class, 'confirmEmail'])
+            ->name('auth.email.confirm');
+
     });
 
 

@@ -32,12 +32,23 @@ Each token has its own lifetime, for example access: 30 min, refresh: 30 days
 
 # Endpoints
 
-### Authentication endpoints:
+### Authentication:
+| Method | Endpoint                         | Parameters                                                                                                           | Description         |
+|--------|----------------------------------|----------------------------------------------------------------------------------------------------------------------|---------------------|
+| `POST` | `/auth/login`                    | `email` *string* **required**<br/>`password` *string* **required**                                                   | login user          |
+| `GET`  | `/auth/logout`                   |                                                                                                                      | logout user         |
+| `GET`  | `/auth/refresh-tokens`           |                                                                                                                      | refresh tokens      |
 
-| Method | Endpoint                | Parameters                                                                                                           | Description    |
-|--------|-------------------------|----------------------------------------------------------------------------------------------------------------------|----------------|
-| `POST` | `/auth/login`           | `email` *string* **required**<br/>`password` *string* **required**                                                   | login user     |
-| `GET`  | `/auth/logout`          |                                                                                                                      | logout user    |
-| `GET`  | `/auth/refresh-tokens`  |                                                                                                                      | refresh tokens |
-| `POST` | `/auth/register`        | `email` *string* **required**<br/>`password` *string* **required**<br/>`password_confirmation` *string* **required** | registration   |
-| `POST` | `/auth/confirm/{token}` | `{token}` *string* **required**                                                                                      | confirm email  |
+
+### Registration:
+| Method | Endpoint                         | Parameters                                                                                                           | Description         |
+|--------|----------------------------------|----------------------------------------------------------------------------------------------------------------------|---------------------|
+| `POST` | `/auth/register`                 | `email` *string* **required**<br/>`password` *string* **required**<br/>`password_confirmation` *string* **required** | registration        |
+| `PUT`  | `/auth/register/confirm`         | `token` *string* **required**                                                                                        | confirm email       |
+
+
+### Password recovery:
+| Method | Endpoint                         | Parameters                                                                                                           | Description         |
+|--------|----------------------------------|----------------------------------------------------------------------------------------------------------------------|---------------------|
+| `PUT`  | `/auth/recovery/send-email`      | `email` *string* **required**                                                                                        | send recovery email |
+| `PUT`  | `/auth/recovery/change-password` | `token` *string* **required**<br/>`password` *string* **required**<br/>`password_confirmation` *string* **required** | save new password   |

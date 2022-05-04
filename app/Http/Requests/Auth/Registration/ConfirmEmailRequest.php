@@ -1,10 +1,10 @@
 <?php
 
-namespace App\Http\Requests\Auth;
+namespace App\Http\Requests\Auth\Registration;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class RegistrationRequest extends FormRequest
+class ConfirmEmailRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -24,8 +24,7 @@ class RegistrationRequest extends FormRequest
     public function rules()
     {
         return [
-            'email' => 'required|string|email|max:100|unique:users',
-            'password' => 'required|string|confirmed|min:5|max:64',
+            'token' => 'required|string|exists:users,confirmation_token'
         ];
     }
 }

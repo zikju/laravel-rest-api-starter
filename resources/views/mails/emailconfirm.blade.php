@@ -360,7 +360,8 @@
                                                         <tbody>
                                                         <tr>
                                                             <td>
-                                                                <a href="{{ route('auth.email.confirm', ['token' => $token]) }}" target="_blank">
+                                                                {{-- TODO: confirmation link (targeted to frontend app)--}}
+                                                                <a href="#" target="_blank">
                                                                     <u>Confirm Account</u>
                                                                 </a>
                                                             </td>

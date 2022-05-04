@@ -41,11 +41,11 @@ Route::prefix('auth')->group(function () {
 
         /* Registration */
         Route::post('register', [RegistrationController::class, 'register'])
-            ->name('auth.registration');
+            ->name('registration');
 
         /* Confirm Email */
-        Route::put('confirm/{token}', [RegistrationController::class, 'confirmEmail'])
-            ->name('auth.email.confirm');
+        Route::put('register/confirm', [RegistrationController::class, 'confirmEmail'])
+            ->name('registration.confirm');
 
     });
 

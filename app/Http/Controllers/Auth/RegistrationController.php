@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Auth;
 
+use App\Helpers\HashEmail;
 use App\Helpers\Respond;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Auth\RegistrationRequest;
@@ -34,7 +35,7 @@ class RegistrationController extends Controller
         ));
 
         // Encrypt email (it will be used as confirmation token)
-        $confirmationToken = Crypt::encryptString($email);
+        $confirmationToken = HashEmail::encrypt($email);
 
         // TODO: Send confirmation link
         Mail::to($email)->send(new ConfirmRegistrationEmail($confirmationToken));
@@ -51,23 +52,12 @@ class RegistrationController extends Controller
      */
     public function confirmEmail (Request $request): JsonResponse
     {
-        $confirmationToken = $request->token;
-
-        // Decrypt token to email address
-        try {
-            $decryptedToken = Crypt::decryptString($confirmationToken);
-        } catch (DecryptException $e) {
-            return Respond::error('INVALID_CONFIRMATION_TOKEN');
-        }
-
-        // Validate Email
-        if (!filter_var($decryptedToken, FILTER_VALIDATE_EMAIL)) {
-            return Respond::error('INVALID_CONFIRMATION_TOKEN');
-        }
+        $confirmationHash = $request->token;
+        $email = HashEmail::decrypt($confirmationHash);
 
         // Set user status to 'active'
         $updated = User::query()
-            ->where('email', $decryptedToken)
+            ->where('email', $email)
             ->where('status', '=', 'pending')
             ->update([
                 'status' => 'active',

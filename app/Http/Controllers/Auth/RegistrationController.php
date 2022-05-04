@@ -69,7 +69,10 @@ class RegistrationController extends Controller
         $updated = User::query()
             ->where('email', $decryptedToken)
             ->where('status', '=', 'pending')
-            ->update(['status' => 'active']);
+            ->update([
+                'status' => 'active',
+                'email_verified_at' => now()
+            ]);
         if(! $updated) {
             return Respond::error('INVALID_CONFIRMATION_TOKEN');
         }

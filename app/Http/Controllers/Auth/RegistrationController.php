@@ -2,17 +2,15 @@
 
 namespace App\Http\Controllers\Auth;
 
-use App\Helpers\HashEmail;
 use App\Helpers\Respond;
 use App\Http\Controllers\Controller;
-use App\Http\Requests\Auth\RegistrationRequest;
+use App\Http\Requests\Auth\Registration\ConfirmEmailRequest;
+use App\Http\Requests\Auth\Registration\RegistrationRequest;
 use App\Mail\ConfirmRegistrationEmail;
 use App\Models\User;
-use Crypt;
-use Illuminate\Contracts\Encryption\DecryptException;
 use Illuminate\Http\JsonResponse;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Mail;
+use Illuminate\Support\Str;
 
 class RegistrationController extends Controller
 {
@@ -29,15 +27,16 @@ class RegistrationController extends Controller
 
         $email = $validatedRequestData['email'];
 
-        $userData = User::create(array_merge(
+        $confirmationToken = Str::uuid();
+
+        User::create(array_merge(
             $validatedRequestData,
-            ['password' => bcrypt($request->password)]
+            [
+                'password' => bcrypt($request->password),
+                'confirmation_token' => $confirmationToken
+            ]
         ));
 
-        // Encrypt email (it will be used as confirmation token)
-        $confirmationToken = HashEmail::encrypt($email);
-
-        // TODO: Send confirmation link
         Mail::to($email)->send(new ConfirmRegistrationEmail($confirmationToken));
 
         return Respond::ok('Confirmation email has been sent to ' . $email);
@@ -47,21 +46,24 @@ class RegistrationController extends Controller
     /**
      * Confirm Email.
      *
-     * @param Request $request
+     * @param ConfirmEmailRequest $request
      * @return JsonResponse
      */
-    public function confirmEmail (Request $request): JsonResponse
+    public function confirmEmail (ConfirmEmailRequest $request): JsonResponse
     {
-        $confirmationHash = $request->token;
-        $email = HashEmail::decrypt($confirmationHash);
+        // Retrieve the validated input data...
+        $validatedRequestData = $request->validated();
+
+        $confirmationToken = $validatedRequestData['token'];
 
         // Set user status to 'active'
         $updated = User::query()
-            ->where('email', $email)
+            ->where('confirmation_token', $confirmationToken)
             ->where('status', '=', 'pending')
             ->update([
                 'status' => 'active',
-                'email_verified_at' => now()
+                'email_verified_at' => now(),
+                'confirmation_token' => NULL // reset token
             ]);
         if(! $updated) {
             return Respond::error('INVALID_CONFIRMATION_TOKEN');

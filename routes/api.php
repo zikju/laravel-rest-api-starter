@@ -3,6 +3,7 @@
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\Auth\RefreshTokensController;
 use App\Http\Controllers\Auth\RegistrationController;
+use App\Http\Controllers\PasswordRecoveryController;
 use App\Http\Controllers\UserController;
 
 use App\Http\Middleware\EnsureTokenHeadersAreExist;
@@ -41,13 +42,21 @@ Route::prefix('auth')->group(function () {
 
         /* Registration */
         Route::post('register', [RegistrationController::class, 'register'])
-            ->name('auth.registration');
+            ->name('registration');
 
         /* Confirm Email */
-        Route::put('confirm/{token}', [RegistrationController::class, 'confirmEmail'])
-            ->name('auth.email.confirm');
+        Route::put('register/confirm', [RegistrationController::class, 'confirmEmail'])
+            ->name('registration.confirm');
 
     });
+
+    /* Password Recovery */
+    Route::put('recovery/send-email', [PasswordRecoveryController::class, 'sendConfirmationEmail'])
+        ->middleware(['middleware' => 'throttle:2,1'])
+        ->name('recovery.send');
+    Route::put('recovery/change-password', [PasswordRecoveryController::class, 'changePassword'])
+        ->middleware(['middleware' => 'throttle:2,1'])
+        ->name('recovery.change');
 
 
     Route::middleware('auth')->group(function () {

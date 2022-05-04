@@ -3,7 +3,7 @@
 <head>
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-    <title>Please confirm your email</title>
+    <title>Password Recovery</title>
     <style>
         /* -------------------------------------
             GLOBAL RESETS
@@ -349,9 +349,9 @@
                             <table role="presentation" border="0" cellpadding="0" cellspacing="0">
                                 <tr>
                                     <td>
-                                        <p>Hi there,</p>
-                                        <p>We're excited to have you get started!</p>
-                                        <p>First, you need to confirm your account. Just press the button below:</p>
+                                        <h2>Password Reset</h2>
+                                        <p>If you've lost your password or wish to reset it,</p>
+                                        <p>use the link below to get started.</p>
                                         <table role="presentation" border="0" cellpadding="0" cellspacing="0" class="btn btn-primary">
                                             <tbody>
                                             <tr>
@@ -360,9 +360,9 @@
                                                         <tbody>
                                                         <tr>
                                                             <td>
-                                                                {{-- TODO: confirmation link (targeted to frontend app)--}}
+                                                                {{-- TODO: confirmation link (targeted to frontend app) --}}
                                                                 <a href="#" target="_blank">
-                                                                    <u>Confirm Account</u>
+                                                                    <u>Password Reset</u>
                                                                 </a>
                                                             </td>
                                                         </tr>

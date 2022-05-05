@@ -11,7 +11,8 @@ class RecoveryConfirmEmail extends Mailable
 {
     use Queueable, SerializesModels;
 
-    public string $token;
+
+    public string $confirmation_url;
 
     /**
      * Create a new message instance.
@@ -20,7 +21,7 @@ class RecoveryConfirmEmail extends Mailable
      */
     public function __construct(string $token)
     {
-        $this->token = $token;
+        $this->confirmation_url = env('FRONTEND_RECOVERY_CONFIRMATION_URL') . '?token=' . $token;
     }
 
     /**
@@ -30,6 +31,7 @@ class RecoveryConfirmEmail extends Mailable
      */
     public function build()
     {
-        return $this->view('mails.recoveryconfirm');
+        return $this->subject('Password Recovery confirmation')
+                    ->view('mails.recoveryconfirm');
     }
 }

@@ -360,8 +360,7 @@
                                                         <tbody>
                                                         <tr>
                                                             <td>
-                                                                {{-- TODO: confirmation link (targeted to frontend app) --}}
-                                                                <a href="#" target="_blank">
+                                                                <a href="{{ $confirmation_url  }}" target="_blank">
                                                                     <u>Password Reset</u>
                                                                 </a>
                                                             </td>

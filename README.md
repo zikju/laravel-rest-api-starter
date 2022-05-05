@@ -14,9 +14,10 @@ _This repository it a fork from original [tymonsdesigns/jwt-auth](https://github
 
 # Features
 - JWT Token Authentication
-- JWT Refresh Tokens
+- Refresh Tokens
+- Registration
+- Password recovery
 - Users management
-- Role-based routes protection (user, admin)
 - More to come...
 
 # Installation

@@ -54,6 +54,7 @@ Route::prefix('auth')->group(function () {
     Route::put('recovery/send-email', [PasswordRecoveryController::class, 'sendConfirmationEmail'])
         ->middleware(['middleware' => 'throttle:2,1'])
         ->name('recovery.send');
+
     Route::put('recovery/change-password', [PasswordRecoveryController::class, 'changePassword'])
         ->middleware(['middleware' => 'throttle:2,1'])
         ->name('recovery.change');
@@ -81,10 +82,12 @@ Route::prefix('auth')->group(function () {
 Route::middleware('auth')->group(function () {
     /* Create User */
     Route::post('users', [UserController::class, 'create'])
+        ->middleware('role:manager')
         ->name('users.create');
 
     /* Delete User */
     Route::delete('users', [UserController::class, 'delete'])
+        ->middleware('role:manager')
         ->name('users.delete');
 });
 
@@ -102,4 +105,5 @@ Route::fallback(static function (){
 
 /* Route for tests... */
 Route::get('test', [\App\Http\Controllers\TestController::class, 'test'])
+    ->middleware('role:user')
     ->name('test');

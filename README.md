@@ -17,6 +17,7 @@ _This repository it a fork from original [tymonsdesigns/jwt-auth](https://github
 - Refresh Tokens
 - Registration
 - Password recovery
+- Role-based permissions
 - Users management
 - More to come...
 
@@ -30,6 +31,26 @@ _TBA_
 **Refresh Token** - issued by the backend server upon successful authentication and is used to obtain a new pair of access/refresh tokens.
 
 Each token has its own lifetime, for example access: 30 min, refresh: 30 days
+
+# Role permissions
+
+By default, `users` database table contains these roles: `user`, `manager` and `admin`
+
+User with role `admin` - can bypass any role-checker and access any route.
+
+<br />
+
+For example, you can protect certain routes with custom middleware:
+
+`
+Route::post('users', [UserController::class, 'delete'])->middleware('role:manager');
+`
+
+You can allow multiple roles, just divide them with commas:
+
+`
+Route::post('users', [UserController::class, 'delete'])->middleware('role:user,manager');
+`
 
 # Endpoints
 

@@ -77,6 +77,15 @@ Run server:<br />
 php artisan serve
 ````
 
+
+
+
+# POSTMAN
+For easiest way to test endpoints - import file `POSTMAN_ENDPOINTS.json` into your [Postman](https://www.postman.com/ "Postman") workflow. <br />
+  After file import - find Collection variables and change `API_URL` to your project url.
+
+
+
 # IDE-Helper
 For better development experience consider to use [barryvdh/laravel-ide-helper](https://github.com/barryvdh/laravel-ide-helper) (already pre-installed by default).
 This package generates helper files that enable your IDE to provide accurate autocompletion. Generation is done based on the files in your project, so they are always up-to-date.

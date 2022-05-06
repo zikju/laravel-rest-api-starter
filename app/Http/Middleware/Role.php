@@ -23,7 +23,7 @@ class Role
         // Get current authorized user model
         $user = Auth::user();
         if (! $user) {
-            Respond::error('Authentication is required', 401);
+            return Respond::error('Authentication is required', 401);
         }
 
         // User with 'admin' role can skip check and access everything

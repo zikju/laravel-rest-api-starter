@@ -53,9 +53,6 @@ class LoginController extends Controller
      */
     public function logout(Request $request): JsonResponse
     {
-        // Invalidate 'Access Token'
-        auth()->logout();
-
         // Delete current User session from database
         $refreshToken = $request->header(env('JWT_REFRESH_TOKEN_HEADER_KEY'));
         UserSession::where('refresh_token', $refreshToken)->delete();

@@ -28,6 +28,11 @@ class LoginController extends Controller
             return Respond::error('INVALID_CREDENTIALS', 401);
         }
 
+        // Check account status
+        if (auth()->user()->status !== 'active') {
+            return Respond::error('ACCOUNT_NOT_ACTIVE', 403);
+        }
+
         // Create 'Refresh Token'
         $refreshToken = (new UserSession())->createSession(auth()->id(), $request->getClientIp());
 
